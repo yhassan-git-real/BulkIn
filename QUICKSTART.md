@@ -1,4 +1,173 @@
-# 🚀 BulkIn - Quick Start Guide
+# ⚡ BulkIn - Quick Start Guide
+
+Get up and running with BulkIn in **5 minutes**!
+
+---
+
+## � Prerequisites
+
+```bash
+✓ .NET 8 SDK
+✓ SQL Server 2019+
+✓ Windows 10/11
+```
+
+---
+
+## �🚀 Step-by-Step Setup
+
+### 1️⃣ Database Setup
+
+Run the database script:
+
+```bash
+sqlcmd -S YOUR_SERVER\INSTANCE -i scripts\DatabaseSetup.sql
+```
+
+Or manually execute `scripts/DatabaseSetup.sql` in SQL Server Management Studio.
+
+**This creates:**
+- Database: `RAW_PROCESS`
+- Table: `TextFileData` (ID, Data, Filename, Date)
+- Temp Table: `TempTextFileData`
+- Stored Procedure: `usp_TransferDataFromTemp`
+
+---
+
+### 2️⃣ Configure Application
+
+Edit `src/BulkIn/appsettings.json`:
+
+```json
+{
+  "DatabaseSettings": {
+    "ServerName": "YOUR_SERVER\\INSTANCE",     // ← Change this
+    "DatabaseName": "RAW_PROCESS",
+    "UseTrustedConnection": true
+  },
+  "FileSettings": {
+    "SourceFilePath": "D:\\YourPath\\SourceFiles",  // ← Change this
+    "FilePatterns": [ "*.txt", "*.csv" ]
+  }
+}
+```
+
+---
+
+### 3️⃣ Prepare Your Files
+
+Place your text files in the source directory:
+
+```
+D:\YourPath\SourceFiles\
+├── file1.txt
+├── file2.csv
+└── data.log
+```
+
+---
+
+### 4️⃣ Run the Application
+
+**Option A: Quick Run**
+```bash
+cd src\BulkIn
+dotnet run
+```
+
+**Option B: Use Batch Files**
+```bash
+RunBulkIn.bat         # Auto-compile and run
+BulkIn-Menu.bat       # Interactive menu
+RunBulkIn-Fast.bat    # Direct executable
+```
+
+---
+
+## 📊 What Happens Next?
+
+```
+1. Configuration loads ✅
+2. Database connection tests ✅
+3. Files discovered (e.g., 18 files found)
+4. Press ENTER to start processing
+5. Progress shown in real-time
+6. Final summary displayed
+```
+
+---
+
+## 🎯 Expected Output
+
+```
+───────────────────────────────────────────────────────────
+📄 [1/18] yourfile.txt
+   354.18 MB • 2025-10-31 01:36:45
+───────────────────────────────────────────────────────────
+   🔧 Preparing temp table... ✅
+   📊 Processing: 200,000 rows...
+   📥 Inserted: 923,843 rows
+   🔄 Transferring to target... ✅ (923,843 rows)
+   ✅ Completed: 923,843 rows • 23.7s • 38,983 rows/sec
+```
+
+---
+
+## 📁 Check Results
+
+Query your data:
+
+```sql
+USE RAW_PROCESS;
+
+-- View all data
+SELECT * FROM TextFileData;
+
+-- Count rows per file
+SELECT Filename, COUNT(*) AS RowCount
+FROM TextFileData
+GROUP BY Filename
+ORDER BY Filename;
+
+-- View recent inserts
+SELECT TOP 100 * 
+FROM TextFileData
+ORDER BY Date DESC;
+```
+
+---
+
+## 🔧 Common Issues
+
+| Issue | Fix |
+|-------|-----|
+| **Connection failed** | Update `ServerName` in appsettings.json |
+| **Files not found** | Check `SourceFilePath` exists |
+| **Permission denied** | Run as Administrator |
+
+---
+
+## 📝 Logs
+
+Check logs for detailed information:
+
+```
+logs/
+├── SuccessLog_YYYYMMDD_HHMMSS.txt
+└── ErrorLog_YYYYMMDD_HHMMSS.txt
+```
+
+---
+
+## 🎉 Success!
+
+You're now processing bulk text files at **35,000-65,000 rows/second**!
+
+For advanced configuration, see the main [README.md](README.md).
+
+---
+
+**Questions?** Open an issue on GitHub!
 
 **Version:** 1.0  
 **Date:** October 31, 2025  

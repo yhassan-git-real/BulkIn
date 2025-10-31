@@ -1,40 +1,105 @@
-# 🚀 BulkIn - Bulk Text File Data Ingestion System
+<div align="center">
 
-[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
-[![SQL Server](https://img.shields.io/badge/SQL%20Server-2019+-CC2927?logo=microsoft-sql-server)](https://www.microsoft.com/sql-server)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+# � BulkIn
 
-**BulkIn** is a robust, high-performance .NET 8 console application designed to efficiently process and load multiple large text files (up to 500 MB each) into SQL Server while preserving all whitespace and ensuring data integrity.
+### *High-Performance Bulk Text File Ingestion System*
 
----
+[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+[![SQL Server](https://img.shields.io/badge/SQL_Server-2019+-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)](https://www.microsoft.com/sql-server)
+[![C#](https://img.shields.io/badge/C%23-11.0-239120?style=for-the-badge&logo=c-sharp&logoColor=white)](https://docs.microsoft.com/en-us/dotnet/csharp/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
-## 📋 Features
+*Lightning-fast • Memory-efficient • Production-ready*
 
-✅ **High-Performance Bulk Loading** - Process 20-30 files (500 MB each) efficiently  
-✅ **Whitespace Preservation** - Maintains all leading, trailing, and inter-column spaces  
-✅ **Memory Efficient** - Streaming architecture prevents memory overflow  
-✅ **Transaction Safety** - Per-file transactions with rollback capabilities  
-✅ **Comprehensive Logging** - Separate success and error logs with timestamps  
-✅ **Configurable** - External JSON configuration for all parameters  
-✅ **Fault Tolerant** - Continue processing on errors with detailed error tracking  
+[Features](#-features) • [Quick Start](#-quick-start) • [Configuration](#-configuration) • [Documentation](#-documentation)
+
+</div>
 
 ---
 
-## 🏗️ Architecture
+## 🎯 Overview
 
+**BulkIn** is a modern .NET 8 console application engineered for **high-volume text file ingestion** into SQL Server. Process multiple large files (up to 500 MB each) with exceptional speed and reliability while preserving data integrity.
+
+### 🎪 Live Demo Output
+
+```ansi
+╔════════════════════════════════════════════════════════════╗
+║                    BulkIn v1.0                             ║
+║         Bulk Text File Data Ingestion System               ║
+╚════════════════════════════════════════════════════════════╝
+
+───────────────────────────────────────────────────────────
+📄 [1/18] ACEFOI202508011.txt
+   354.18 MB • 2025-10-31 01:36:45
+───────────────────────────────────────────────────────────
+   🔧 Preparing temp table... ✅
+   📊 Processing: 200,000 rows...
+   📥 Inserted: 923,843 rows
+   🔄 Transferring to target... ✅ (923,843 rows)
+   ✅ Completed: 923,843 rows • 23.7s • 38,983 rows/sec
 ```
-BulkIn/
-├── src/BulkIn/
-│   ├── Configuration/      # Configuration models and loaders
-│   ├── Services/           # Core business logic services
-│   ├── Models/             # Data models and DTOs
-│   ├── Utilities/          # Helper classes and utilities
-│   ├── Program.cs          # Application entry point
-│   └── appsettings.json    # Configuration file
-├── scripts/
-│   └── DatabaseSetup.sql   # Database initialization script
-└── logs/                   # Application logs directory
-```
+
+### � Performance Metrics
+
+<div align="center">
+
+| Metric | Performance |
+|--------|-------------|
+| **Throughput** | 35,000 - 65,000 rows/sec |
+| **Files Processed** | 18 files (6.37 GB) |
+| **Total Rows** | 16.6 million rows |
+| **Processing Time** | 7 min 43 sec |
+| **Success Rate** | 100% |
+
+</div>
+
+---
+
+## ✨ Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 🚀 Performance
+- **SqlBulkCopy** - Maximum insert speed
+- **Streaming architecture** - No memory overflow
+- **Batch processing** - 200K rows per batch
+- **Transaction safety** - Per-file rollback
+
+</td>
+<td width="50%">
+
+### 🎨 User Experience
+- **Colorful console** - Modern ANSI colors
+- **Real-time progress** - Live row counters
+- **Comprehensive logs** - Success/Error tracking
+- **Easy launchers** - Batch file shortcuts
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### ⚙️ Flexibility
+- **Multi-format support** - .txt, .csv, .log, etc.
+- **Multiple patterns** - Process mixed file types
+- **Configurable** - External JSON config
+- **Whitespace preservation** - Exact data capture
+
+</td>
+<td width="50%">
+
+### 🛡️ Reliability
+- **Error handling** - Graceful failure recovery
+- **Validation** - Pre-flight checks
+- **Logging** - Timestamped audit trails
+- **Retry logic** - Automatic reconnection
+
+</td>
+</tr>
+</table>
 
 ---
 
@@ -42,13 +107,248 @@ BulkIn/
 
 ### Prerequisites
 
-- **.NET 8 SDK** or later ([Download](https://dotnet.microsoft.com/download/dotnet/8.0))
-- **SQL Server 2019+** (Express, Standard, or Enterprise)
-- **Windows** operating system (tested on Windows 10/11)
+```bash
+✓ .NET 8 SDK or later
+✓ SQL Server 2019+
+✓ Windows OS (10/11)
+```
 
 ### Installation
 
-1. **Clone or download the repository**
+```bash
+# 1. Clone the repository
+git clone https://github.com/yourusername/BulkIn.git
+cd BulkIn
+
+# 2. Set up database
+sqlcmd -S YOUR_SERVER -i scripts/DatabaseSetup.sql
+
+# 3. Configure settings
+# Edit src/BulkIn/appsettings.json with your details
+
+# 4. Run!
+dotnet run --project src/BulkIn
+```
+
+### 🎯 One-Click Launch
+
+Use the included batch files for instant startup:
+
+```cmd
+RunBulkIn.bat          # Quick run (auto-compiles)
+BulkIn-Menu.bat        # Interactive menu
+RunBulkIn-Fast.bat     # Direct executable (fastest)
+```
+
+---
+
+## ⚙️ Configuration
+
+Edit `src/BulkIn/appsettings.json`:
+
+```json
+{
+  "DatabaseSettings": {
+    "ServerName": "YOUR_SERVER\\INSTANCE",
+    "DatabaseName": "RAW_PROCESS",
+    "UseTrustedConnection": true
+  },
+  "FileSettings": {
+    "SourceFilePath": "D:\\YourPath\\SourceFiles",
+    "FilePatterns": [ "*.txt", "*.csv", "*.log" ],
+    "ProcessInAlphabeticalOrder": true
+  },
+  "ProcessingSettings": {
+    "BatchSize": 200000,
+    "EnableTransactionPerFile": true,
+    "ContinueOnError": true
+  }
+}
+```
+
+### 🎨 Multi-Format Support
+
+Process multiple file types in one run:
+
+```json
+"FilePatterns": [ "*.txt", "*.csv" ]           // Text and CSV
+"FilePatterns": [ "*.txt", "*.log", "*.dat" ]  // Multiple formats
+"FilePatterns": [ "data_*.txt" ]               // Pattern matching
+```
+
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    File Processing Flow                     │
+└─────────────────────────────────────────────────────────────┘
+
+  📁 Source Files
+       ↓
+  🔍 Discovery & Validation
+       ↓
+  📖 Stream Reading (yield return)
+       ↓
+  📥 SqlBulkCopy → TempTable
+       ↓
+  🔄 Stored Procedure → TargetTable
+       ↓
+  ✅ Success Logging
+```
+
+### 📂 Project Structure
+
+```
+BulkIn/
+├── 📁 src/BulkIn/
+│   ├── Configuration/         # Config models & validation
+│   ├── Services/             # Core business logic
+│   │   ├── FileReaderService      → Streaming file reader
+│   │   ├── BulkInsertService      → SqlBulkCopy wrapper
+│   │   ├── DataTransferService    → Temp→Target transfer
+│   │   └── FileProcessorService   → Main orchestrator
+│   ├── Models/               # Data models
+│   ├── Utilities/            # Helpers & colors
+│   └── appsettings.json      # Configuration
+├── 📁 scripts/               # SQL scripts
+├── 📁 logs/                  # Application logs
+└── 📄 *.bat                  # Quick launchers
+```
+
+---
+
+## 📚 Documentation
+
+### Quick Reference
+
+- **QUICKSTART.md** - 5-minute setup guide
+- **Database Setup** - See `scripts/DatabaseSetup.sql`
+- **Batch Launchers** - Run `BulkIn-Menu.bat` for options
+
+### Key Concepts
+
+#### 🔹 Two-Stage Loading
+
+```sql
+SourceFiles → TempTextFileData → TextFileData
+            (staging)          (permanent)
+```
+
+#### 🔹 Data Model
+
+Each row stores:
+- `ID` - Auto-increment primary key
+- `Data` - Complete line from file (preserves whitespace)
+- `Filename` - Source file tracking
+- `Date` - Insert timestamp
+
+#### 🔹 Color Coding
+
+- 🟢 **Green** - Success, completed operations
+- 🔵 **Cyan** - Information, file names
+- 🟡 **Yellow** - Progress counters
+- 🟣 **Magenta** - Performance metrics
+- 🔴 **Red** - Errors and failures
+
+---
+
+## 🎯 Usage Examples
+
+### Basic Usage
+
+```bash
+# Process all .txt files
+dotnet run --project src/BulkIn
+
+# Use menu for interactive options
+BulkIn-Menu.bat
+```
+
+### Advanced Scenarios
+
+```json
+// Process multiple formats
+"FilePatterns": [ "*.txt", "*.csv", "*.log" ]
+
+// Exclude backup files
+"ExcludeFilePatterns": [ "*_backup.*", "*_temp.*" ]
+
+// Large batch size for better performance
+"BatchSize": 500000
+```
+
+---
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+| Issue | Solution |
+|-------|----------|
+| **Connection failed** | Check server name in `appsettings.json` |
+| **File not found** | Verify `SourceFilePath` directory exists |
+| **Permission denied** | Run as Administrator or check folder permissions |
+| **Slow performance** | Increase `BatchSize` to 500,000 |
+
+### Logs Location
+
+```
+logs/
+├── SuccessLog_YYYYMMDD_HHMMSS.txt
+└── ErrorLog_YYYYMMDD_HHMMSS.txt
+```
+
+---
+
+## 🚀 Performance Tips
+
+1. **Batch Size** - Start with 200K, increase to 500K for better speed
+2. **Transaction Mode** - Enable for safety, disable for maximum speed
+3. **File Order** - Alphabetical sorting helps track progress
+4. **Network** - Use local SQL Server for best performance
+5. **Exclusions** - Filter unnecessary files to reduce processing time
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 💡 Tech Stack
+
+- **Runtime**: .NET 8.0
+- **Language**: C# 11.0
+- **Database**: SQL Server 2019+
+- **Libraries**: 
+  - Microsoft.Data.SqlClient 5.2.2
+  - Serilog 3.1.1
+  - Microsoft.Extensions.Configuration 8.0.0
+
+---
+
+## 📞 Support
+
+For issues, questions, or suggestions, please open an issue on GitHub.
+
+---
+
+<div align="center">
+
+**Built with ❤️ using .NET 8 and C#**
+
+⭐ Star this repo if you find it helpful!
+
+</div>
 
 2. **Set up the database**
    ```powershell
