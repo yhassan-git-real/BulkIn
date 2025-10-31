@@ -1,6 +1,6 @@
 <div align="center">
 
-# � BulkIn
+# 📜 BulkIn
 
 ### *High-Performance Bulk Text File Ingestion System*
 
@@ -40,7 +40,7 @@
    ✅ Completed: 923,843 rows • 23.7s • 38,983 rows/sec
 ```
 
-### � Performance Metrics
+### 🚄 Performance Metrics
 
 <div align="center">
 
