@@ -1,10 +1,11 @@
 using Microsoft.Data.SqlClient;
 using System.Diagnostics;
-using BulkIn.Configuration;
-using BulkIn.Models;
-using BulkIn.Utilities;
+using BulkInApp.Configuration;
+using BulkInApp.Models;
+using BulkInApp.Utilities;
+using Console = System.Console;
 
-namespace BulkIn.Services
+namespace BulkInApp.Services
 {
     /// <summary>
     /// Main orchestrator service for file processing workflow

@@ -1,4 +1,4 @@
-namespace BulkIn.Configuration
+namespace BulkInApp.Configuration
 {
     /// <summary>
     /// Data processing and performance configuration settings

@@ -1,4 +1,4 @@
-namespace BulkIn.Models
+namespace BulkInApp.Models
 {
     /// <summary>
     /// Tracks the processing result for a single file

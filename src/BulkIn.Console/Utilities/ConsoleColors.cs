@@ -1,4 +1,4 @@
-namespace BulkIn.Utilities
+namespace BulkInApp.Utilities
 {
     /// <summary>
     /// Console color utility for modern, colorful output

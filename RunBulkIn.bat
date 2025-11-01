@@ -7,7 +7,7 @@ REM Set console to UTF-8 for emoji support
 chcp 65001 > nul
 
 REM Change to the project directory
-cd /d "%~dp0src\BulkIn"
+cd /d "%~dp0src\BulkIn.Console"
 
 REM Run the application
 dotnet run

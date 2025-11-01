@@ -1,9 +1,10 @@
 using System;
-using BulkIn.Configuration;
-using BulkIn.Services;
-using BulkIn.Utilities;
+using BulkInApp.Configuration;
+using BulkInApp.Services;
+using BulkInApp.Utilities;
+using Console = System.Console;
 
-namespace BulkIn
+namespace BulkInApp
 {
     /// <summary>
     /// BulkIn - Bulk Text File Data Ingestion System

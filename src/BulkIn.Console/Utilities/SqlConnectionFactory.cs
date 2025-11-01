@@ -1,7 +1,7 @@
 using Microsoft.Data.SqlClient;
-using BulkIn.Configuration;
+using BulkInApp.Configuration;
 
-namespace BulkIn.Utilities
+namespace BulkInApp.Utilities
 {
     /// <summary>
     /// Factory class for creating and managing SQL Server connections

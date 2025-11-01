@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
+using Console = System.Console;
 
-namespace BulkIn.Configuration
+namespace BulkInApp.Configuration
 {
     /// <summary>
     /// Loads and validates application configuration from appsettings.json

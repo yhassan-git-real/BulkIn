@@ -1,6 +1,6 @@
 using System.Data;
 
-namespace BulkIn.Services
+namespace BulkInApp.Services
 {
     /// <summary>
     /// Custom IDataReader implementation for streaming text file lines to SqlBulkCopy

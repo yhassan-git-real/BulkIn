@@ -10,11 +10,11 @@ REM Set title
 title BulkIn - Bulk Text File Data Ingestion System
 
 REM Change to the executable directory
-cd /d "%~dp0src\BulkIn\bin\Debug\net8.0"
+cd /d "%~dp0src\BulkIn.Console\bin\Debug\net8.0"
 
 REM Check if executable exists
-if not exist "BulkIn.exe" (
-    echo Error: BulkIn.exe not found!
+if not exist "BulkIn.Console.exe" (
+    echo Error: BulkIn.Console.exe not found!
     echo Please build the project first using: dotnet build
     echo.
     pause
@@ -22,7 +22,7 @@ if not exist "BulkIn.exe" (
 )
 
 REM Run the executable
-BulkIn.exe
+BulkIn.Console.exe
 
 REM Keep console open if there was an error
 if %ERRORLEVEL% NEQ 0 (

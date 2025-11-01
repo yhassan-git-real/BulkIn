@@ -1,4 +1,4 @@
-namespace BulkIn.Configuration
+namespace BulkInApp.Configuration
 {
     /// <summary>
     /// Root application settings model that contains all configuration sections

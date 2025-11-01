@@ -1,4 +1,4 @@
-namespace BulkIn.Models
+namespace BulkInApp.Models
 {
     /// <summary>
     /// Tracks overall processing statistics and metrics
