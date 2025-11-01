@@ -1,4 +1,4 @@
-namespace BulkIn.Models
+namespace BulkInApp.Models
 {
     /// <summary>
     /// Represents a single text file data record

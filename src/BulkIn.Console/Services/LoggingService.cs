@@ -1,9 +1,10 @@
 using Serilog;
 using Serilog.Events;
-using BulkIn.Configuration;
-using BulkIn.Models;
+using BulkInApp.Configuration;
+using BulkInApp.Models;
+using Console = System.Console;
 
-namespace BulkIn.Services
+namespace BulkInApp.Services
 {
     /// <summary>
     /// Service for comprehensive logging with Serilog

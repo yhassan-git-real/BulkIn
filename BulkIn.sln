@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.0.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulkIn", "src\BulkIn\BulkIn.csproj", "{A5C7E8D9-6B4F-4E2A-9C3D-1F8A7B6E5D4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulkIn.Console", "src\BulkIn.Console\BulkIn.csproj", "{A5C7E8D9-6B4F-4E2A-9C3D-1F8A7B6E5D4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

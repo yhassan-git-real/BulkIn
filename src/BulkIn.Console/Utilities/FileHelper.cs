@@ -1,6 +1,6 @@
-using BulkIn.Configuration;
+using BulkInApp.Configuration;
 
-namespace BulkIn.Utilities
+namespace BulkInApp.Utilities
 {
     /// <summary>
     /// Helper class for file operations and discovery

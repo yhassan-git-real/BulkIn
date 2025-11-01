@@ -1,6 +1,6 @@
-using BulkIn.Models;
+using BulkInApp.Models;
 
-namespace BulkIn.Services
+namespace BulkInApp.Services
 {
     /// <summary>
     /// Interface for file processing operations

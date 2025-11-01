@@ -42,7 +42,7 @@ cls
 echo.
 echo Starting BulkIn...
 echo.
-cd /d "%~dp0src\BulkIn"
+cd /d "%~dp0src\BulkIn.Console"
 dotnet run
 pause
 goto MENU
@@ -83,8 +83,8 @@ goto MENU
 cls
 echo.
 echo Opening configuration file...
-if exist "%~dp0src\BulkIn\appsettings.json" (
-    start "" notepad "%~dp0src\BulkIn\appsettings.json"
+if exist "%~dp0src\BulkIn.Console\appsettings.json" (
+    start "" notepad "%~dp0src\BulkIn.Console\appsettings.json"
 ) else (
     echo Configuration file not found!
     pause

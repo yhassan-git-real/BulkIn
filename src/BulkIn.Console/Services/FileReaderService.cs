@@ -1,7 +1,7 @@
 using System.Text;
-using BulkIn.Configuration;
+using BulkInApp.Configuration;
 
-namespace BulkIn.Services
+namespace BulkInApp.Services
 {
     /// <summary>
     /// Service for reading text files with streaming to prevent memory overflow

@@ -1,8 +1,8 @@
 using Microsoft.Data.SqlClient;
-using BulkIn.Configuration;
-using BulkIn.Utilities;
+using BulkInApp.Configuration;
+using BulkInApp.Utilities;
 
-namespace BulkIn.Services
+namespace BulkInApp.Services
 {
     /// <summary>
     /// Service for transferring data from temporary table to target table

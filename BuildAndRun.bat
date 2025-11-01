@@ -35,13 +35,13 @@ echo Starting BulkIn application...
 echo.
 
 REM Change to the release executable directory
-cd /d "%~dp0src\BulkIn\bin\Release\net8.0"
+cd /d "%~dp0src\BulkIn.Console\bin\Release\net8.0"
 
 REM Update title
 title BulkIn v1.0
 
 REM Run the executable
-BulkIn.exe
+BulkIn.Console.exe
 
 REM Keep console open if there was an error
 if %ERRORLEVEL% NEQ 0 (
