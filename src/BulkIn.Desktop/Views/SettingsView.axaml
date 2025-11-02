@@ -1,0 +1,379 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:BulkIn.Desktop.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+             x:Class="BulkIn.Desktop.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel"
+             Background="#F9FAFB">
+
+    <Design.DataContext>
+        <vm:SettingsViewModel/>
+    </Design.DataContext>
+
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveSettingsCommand}"/>
+    </UserControl.KeyBindings>
+
+    <ScrollViewer>
+        <StackPanel Spacing="24" Margin="24">
+            
+            <!-- Header Section -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="⚙️ Application Settings" 
+                           FontSize="24" 
+                           FontWeight="SemiBold" 
+                           Foreground="#111827"/>
+                <TextBlock Text="Configure database connection, file processing, and logging options" 
+                           FontSize="14" 
+                           Foreground="#6B7280"/>
+            </StackPanel>
+
+            <!-- Database Configuration Section -->
+            <Border Background="#FFFFFF" 
+                    BorderBrush="#E5E7EB" 
+                    BorderThickness="1" 
+                    CornerRadius="8"
+                    Padding="24">
+                <StackPanel Spacing="20">
+                    <!-- Section Header -->
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="🗄️ Database Configuration" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold" 
+                                   Foreground="#0078D4"/>
+                        <Rectangle Height="2" 
+                                   Fill="#0078D4" 
+                                   Opacity="0.2" 
+                                   HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+
+                    <!-- Server Name -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Server Name *" 
+                                   FontSize="14" 
+                                   FontWeight="Medium" 
+                                   Foreground="#374151"/>
+                        <TextBox Text="{Binding ServerName}" 
+                                 Watermark="e.g., localhost or SERVER\INSTANCE"
+                                 FontSize="14"
+                                 Padding="12,10"
+                                 Background="#F9FAFB"
+                                 BorderBrush="#D1D5DB"
+                                 CornerRadius="6"/>
+                    </StackPanel>
+
+                    <!-- Database Name -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Database Name *" 
+                                   FontSize="14" 
+                                   FontWeight="Medium" 
+                                   Foreground="#374151"/>
+                        <TextBox Text="{Binding DatabaseName}" 
+                                 Watermark="e.g., TextFileDB"
+                                 FontSize="14"
+                                 Padding="12,10"
+                                 Background="#F9FAFB"
+                                 BorderBrush="#D1D5DB"
+                                 CornerRadius="6"/>
+                    </StackPanel>
+
+                    <!-- Authentication Mode -->
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="Authentication Mode" 
+                                   FontSize="14" 
+                                   FontWeight="Medium" 
+                                   Foreground="#374151"/>
+                        <CheckBox Content="Use Windows Authentication (Trusted Connection)" 
+                                  IsChecked="{Binding UseTrustedConnection}"
+                                  FontSize="14"
+                                  Foreground="#6B7280"/>
+                    </StackPanel>
+
+                    <!-- SQL Authentication (visible when not using trusted connection) -->
+                    <StackPanel Spacing="16" IsVisible="{Binding !UseTrustedConnection}">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Username" 
+                                       FontSize="14" 
+                                       FontWeight="Medium" 
+                                       Foreground="#374151"/>
+                            <TextBox Text="{Binding Username}" 
+                                     Watermark="SQL Server username"
+                                     FontSize="14"
+                                     Padding="12,10"
+                                     Background="#F9FAFB"
+                                     BorderBrush="#D1D5DB"
+                                     CornerRadius="6"/>
+                        </StackPanel>
+
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="Password" 
+                                       FontSize="14" 
+                                       FontWeight="Medium" 
+                                       Foreground="#374151"/>
+                            <TextBox Text="{Binding Password}" 
+                                     Watermark="SQL Server password"
+                                     PasswordChar="●"
+                                     FontSize="14"
+                                     Padding="12,10"
+                                     Background="#F9FAFB"
+                                     BorderBrush="#D1D5DB"
+                                     CornerRadius="6"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Connection Timeout -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Connection Timeout (seconds)" 
+                                   FontSize="14" 
+                                   FontWeight="Medium" 
+                                   Foreground="#374151"/>
+                        <NumericUpDown Value="{Binding ConnectionTimeout}" 
+                                       Minimum="10"
+                                       Maximum="300"
+                                       Increment="10"
+                                       FontSize="14"
+                                       Padding="12,10"
+                                       Background="#F9FAFB"
+                                       BorderBrush="#D1D5DB"
+                                       CornerRadius="6"/>
+                    </StackPanel>
+
+                    <!-- Test Connection Button -->
+                    <Button Content="🔌 Test Database Connection" 
+                            Command="{Binding TestConnectionCommand}"
+                            Classes="primary"
+                            Padding="16,12"
+                            HorizontalAlignment="Left"
+                            ToolTip.Tip="Test the database connection with current settings"
+                            AutomationProperties.Name="Test Database Connection"
+                            AutomationProperties.HelpText="Validates the database connection using the current server and database settings"/>
+
+                    <!-- Connection Status Message -->
+                    <TextBlock Text="{Binding ConnectionStatusMessage}" 
+                               FontSize="13"
+                               Foreground="{Binding ConnectionStatusColor}"
+                               IsVisible="{Binding !!ConnectionStatusMessage}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- File Processing Settings Section -->
+            <Border Background="#FFFFFF" 
+                    BorderBrush="#E5E7EB" 
+                    BorderThickness="1" 
+                    CornerRadius="8"
+                    Padding="24">
+                <StackPanel Spacing="20">
+                    <!-- Section Header -->
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="📁 File Processing Settings" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold" 
+                                   Foreground="#10B981"/>
+                        <Rectangle Height="2" 
+                                   Fill="#10B981" 
+                                   Opacity="0.2" 
+                                   HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+
+                    <!-- Source File Path -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Source File Path *" 
+                                   FontSize="14" 
+                                   FontWeight="Medium" 
+                                   Foreground="#374151"/>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBox Grid.Column="0"
+                                     Text="{Binding SourceFilePath}" 
+                                     Watermark="e.g., D:\Data\SourceFiles"
+                                     FontSize="14"
+                                     Padding="12,10"
+                                     Background="#F9FAFB"
+                                     BorderBrush="#D1D5DB"
+                                     CornerRadius="6,0,0,6"
+                                     BorderThickness="1,1,0,1"/>
+                            <Button Grid.Column="1"
+                                    Content="📂 Browse"
+                                    Command="{Binding BrowseFolderCommand}"
+                                    FontSize="13"
+                                    Padding="16,10"
+                                    Background="#F3F4F6"
+                                    Foreground="#374151"
+                                    BorderBrush="#D1D5DB"
+                                    BorderThickness="1"
+                                    CornerRadius="0,6,6,0">
+                                <Button.Styles>
+                                    <Style Selector="Button:pointerover">
+                                        <Setter Property="Background" Value="#E5E7EB"/>
+                                    </Style>
+                                </Button.Styles>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- File Patterns -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="File Patterns (comma-separated)" 
+                                   FontSize="14" 
+                                   FontWeight="Medium" 
+                                   Foreground="#374151"/>
+                        <TextBox Text="{Binding FilePatterns}" 
+                                 Watermark="e.g., *.txt, *.csv"
+                                 FontSize="14"
+                                 Padding="12,10"
+                                 Background="#F9FAFB"
+                                 BorderBrush="#D1D5DB"
+                                 CornerRadius="6"/>
+                        <TextBlock Text="💡 Specify file extensions to process (wildcards supported)" 
+                                   FontSize="12" 
+                                   Foreground="#9CA3AF"
+                                   FontStyle="Italic"/>
+                    </StackPanel>
+
+                    <!-- Batch Size -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Batch Size (records per batch)" 
+                                   FontSize="14" 
+                                   FontWeight="Medium" 
+                                   Foreground="#374151"/>
+                        <NumericUpDown Value="{Binding BatchSize}" 
+                                       Minimum="1000"
+                                       Maximum="100000"
+                                       Increment="1000"
+                                       FontSize="14"
+                                       Padding="12,10"
+                                       Background="#F9FAFB"
+                                       BorderBrush="#D1D5DB"
+                                       CornerRadius="6"/>
+                        <TextBlock Text="💡 Larger batches = faster processing but more memory usage" 
+                                   FontSize="12" 
+                                   Foreground="#9CA3AF"
+                                   FontStyle="Italic"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Logging Settings Section -->
+            <Border Background="#FFFFFF" 
+                    BorderBrush="#E5E7EB" 
+                    BorderThickness="1" 
+                    CornerRadius="8"
+                    Padding="24">
+                <StackPanel Spacing="20">
+                    <!-- Section Header -->
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="📝 Logging Settings" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold" 
+                                   Foreground="#F59E0B"/>
+                        <Rectangle Height="2" 
+                                   Fill="#F59E0B" 
+                                   Opacity="0.2" 
+                                   HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+
+                    <!-- Log File Path -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Log File Path *" 
+                                   FontSize="14" 
+                                   FontWeight="Medium" 
+                                   Foreground="#374151"/>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBox Grid.Column="0"
+                                     Text="{Binding LogFilePath}" 
+                                     Watermark="e.g., D:\Data\Logs"
+                                     FontSize="14"
+                                     Padding="12,10"
+                                     Background="#F9FAFB"
+                                     BorderBrush="#D1D5DB"
+                                     CornerRadius="6,0,0,6"
+                                     BorderThickness="1,1,0,1"/>
+                            <Button Grid.Column="1"
+                                    Content="📂 Browse"
+                                    Command="{Binding BrowseLogFolderCommand}"
+                                    FontSize="13"
+                                    Padding="16,10"
+                                    Background="#F3F4F6"
+                                    Foreground="#374151"
+                                    BorderBrush="#D1D5DB"
+                                    BorderThickness="1"
+                                    CornerRadius="0,6,6,0">
+                                <Button.Styles>
+                                    <Style Selector="Button:pointerover">
+                                        <Setter Property="Background" Value="#E5E7EB"/>
+                                    </Style>
+                                </Button.Styles>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Logging Options -->
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="Logging Options" 
+                                   FontSize="14" 
+                                   FontWeight="Medium" 
+                                   Foreground="#374151"/>
+                        <CheckBox Content="Enable console logging in addition to file logging" 
+                                  IsChecked="{Binding EnableConsoleLogging}"
+                                  FontSize="14"
+                                  Foreground="#6B7280"/>
+                    </StackPanel>
+
+                    <!-- Log Level -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Log Level" 
+                                   FontSize="14" 
+                                   FontWeight="Medium" 
+                                   Foreground="#374151"/>
+                        <ComboBox SelectedItem="{Binding LogLevel}"
+                                  FontSize="14"
+                                  Padding="12,10"
+                                  Background="#F9FAFB"
+                                  BorderBrush="#D1D5DB"
+                                  CornerRadius="6">
+                            <ComboBoxItem Content="Verbose"/>
+                            <ComboBoxItem Content="Debug"/>
+                            <ComboBoxItem Content="Information"/>
+                            <ComboBoxItem Content="Warning"/>
+                            <ComboBoxItem Content="Error"/>
+                            <ComboBoxItem Content="Fatal"/>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Action Buttons -->
+            <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="12">
+                <Button Grid.Column="0"
+                        Content="💾 Save Settings"
+                        Command="{Binding SaveSettingsCommand}"
+                        Classes="success"
+                        Padding="24,14"
+                        ToolTip.Tip="Save all settings to appsettings.json (Ctrl+S)"
+                        AutomationProperties.Name="Save Settings"
+                        AutomationProperties.HelpText="Saves all configuration changes to appsettings.json file. Keyboard shortcut: Ctrl+S"/>
+
+                <Button Grid.Column="1"
+                        Content="🔄 Reset to Defaults" 
+                        Command="{Binding ResetSettingsCommand}"
+                        Classes="secondary"
+                        Padding="20,14"
+                        ToolTip.Tip="Reset all settings to default values"
+                        AutomationProperties.Name="Reset to Defaults"
+                        AutomationProperties.HelpText="Resets all settings to their default values"/>
+
+                <!-- Save Status Message -->
+                <TextBlock Grid.Column="2"
+                           Text="{Binding SaveStatusMessage}" 
+                           FontSize="13"
+                           Foreground="{Binding SaveStatusColor}"
+                           VerticalAlignment="Center"
+                           Margin="16,0,0,0"
+                           IsVisible="{Binding !!SaveStatusMessage}"/>
+            </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

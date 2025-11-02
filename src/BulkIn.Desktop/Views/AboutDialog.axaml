@@ -1,0 +1,168 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="600"
+        x:Class="BulkIn.Desktop.Views.AboutDialog"
+        Title="About BulkIn"
+        Width="500" Height="600"
+        MinWidth="500" MinHeight="600"
+        MaxWidth="500" MaxHeight="600"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="{StaticResource BackgroundWhiteBrush}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        
+        <!-- Header with Logo -->
+        <Border Grid.Row="0" 
+                Background="{StaticResource PrimaryBlueBrush}" 
+                Padding="{StaticResource SpacingXL}">
+            <StackPanel HorizontalAlignment="Center" Spacing="8">
+                <TextBlock Text="📦" 
+                           FontSize="64" 
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="BulkIn" 
+                           FontSize="32" 
+                           FontWeight="Bold" 
+                           Foreground="White"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="File Bulk Insert Manager" 
+                           FontSize="14" 
+                           Foreground="#B3D9FF"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Spacing="16" 
+                        Margin="{StaticResource SpacingXL}">
+                
+                <!-- Version Information -->
+                <Border Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Version Information" 
+                                   Classes="section-header"/>
+                        <StackPanel Spacing="4">
+                            <TextBlock FontSize="13">
+                                <Run Text="Version:" FontWeight="SemiBold"/>
+                                <Run Text="1.0.0"/>
+                            </TextBlock>
+                            <TextBlock FontSize="13">
+                                <Run Text="Build Date:" FontWeight="SemiBold"/>
+                                <Run Text="November 2025"/>
+                            </TextBlock>
+                            <TextBlock FontSize="13">
+                                <Run Text="Framework:" FontWeight="SemiBold"/>
+                                <Run Text=".NET 8.0"/>
+                            </TextBlock>
+                            <TextBlock FontSize="13">
+                                <Run Text="UI Framework:" FontWeight="SemiBold"/>
+                                <Run Text="Avalonia UI 11.3.6"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Description -->
+                <Border Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="About" 
+                                   Classes="section-header"/>
+                        <TextBlock TextWrapping="Wrap" 
+                                   FontSize="13" 
+                                   LineHeight="20"
+                                   Foreground="{StaticResource TextSecondaryBrush}">
+                            BulkIn is a high-performance file bulk insert manager designed for efficiently processing large text files and inserting data into SQL Server databases. It provides real-time progress monitoring, pause/resume capabilities, and comprehensive logging.
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+                <!-- Features -->
+                <Border Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Key Features" 
+                                   Classes="section-header"/>
+                        <StackPanel Spacing="6">
+                            <TextBlock FontSize="13" Foreground="{StaticResource TextSecondaryBrush}">
+                                <Run Text="✓" Foreground="{StaticResource SuccessGreenBrush}" FontWeight="Bold"/>
+                                <Run Text="  Batch file processing with configurable batch sizes"/>
+                            </TextBlock>
+                            <TextBlock FontSize="13" Foreground="{StaticResource TextSecondaryBrush}">
+                                <Run Text="✓" Foreground="{StaticResource SuccessGreenBrush}" FontWeight="Bold"/>
+                                <Run Text="  Real-time progress tracking and statistics"/>
+                            </TextBlock>
+                            <TextBlock FontSize="13" Foreground="{StaticResource TextSecondaryBrush}">
+                                <Run Text="✓" Foreground="{StaticResource SuccessGreenBrush}" FontWeight="Bold"/>
+                                <Run Text="  Pause and resume processing operations"/>
+                            </TextBlock>
+                            <TextBlock FontSize="13" Foreground="{StaticResource TextSecondaryBrush}">
+                                <Run Text="✓" Foreground="{StaticResource SuccessGreenBrush}" FontWeight="Bold"/>
+                                <Run Text="  Comprehensive logging with filtering"/>
+                            </TextBlock>
+                            <TextBlock FontSize="13" Foreground="{StaticResource TextSecondaryBrush}">
+                                <Run Text="✓" Foreground="{StaticResource SuccessGreenBrush}" FontWeight="Bold"/>
+                                <Run Text="  Keyboard shortcuts for power users"/>
+                            </TextBlock>
+                            <TextBlock FontSize="13" Foreground="{StaticResource TextSecondaryBrush}">
+                                <Run Text="✓" Foreground="{StaticResource SuccessGreenBrush}" FontWeight="Bold"/>
+                                <Run Text="  Accessibility support for assistive technologies"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Credits -->
+                <Border Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Technologies" 
+                                   Classes="section-header"/>
+                        <StackPanel Spacing="4">
+                            <TextBlock FontSize="12" Foreground="{StaticResource TextMutedBrush}">
+                                Built with Avalonia UI, .NET 8.0, and CommunityToolkit.Mvvm
+                            </TextBlock>
+                            <TextBlock FontSize="12" Foreground="{StaticResource TextMutedBrush}">
+                                Uses Microsoft.Data.SqlClient for database connectivity
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- License -->
+                <Border Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="License" 
+                                   Classes="section-header"/>
+                        <TextBlock FontSize="12" 
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   TextWrapping="Wrap"
+                                   LineHeight="18">
+                            Copyright © 2025. All rights reserved.
+                            This software is provided for internal use only.
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer with Close Button -->
+        <Border Grid.Row="2" 
+                Background="{StaticResource BackgroundGrayBrush}"
+                BorderBrush="{StaticResource BorderLightBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="{StaticResource SpacingLG}">
+            <Button Content="Close" 
+                    Classes="primary"
+                    HorizontalAlignment="Center"
+                    Padding="32,10"
+                    Click="CloseButton_Click"
+                    IsDefault="True"
+                    ToolTip.Tip="Close the About dialog (Escape)"
+                    AutomationProperties.Name="Close"
+                    AutomationProperties.HelpText="Closes the About dialog"/>
+        </Border>
+
+    </Grid>
+</Window>

@@ -1,0 +1,212 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:BulkIn.Desktop.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+             x:Class="BulkIn.Desktop.Views.LogsView"
+             x:DataType="vm:LogsViewModel"
+             Background="#F9FAFB">
+
+    <Design.DataContext>
+        <vm:LogsViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="24" RowSpacing="16">
+        
+        <!-- Header Section -->
+        <StackPanel Grid.Row="0" Spacing="8">
+            <TextBlock Text="📝 Application Logs" 
+                       FontSize="24" 
+                       FontWeight="SemiBold" 
+                       Foreground="#111827"/>
+            <TextBlock Text="Real-time logging and diagnostic information" 
+                       FontSize="14" 
+                       Foreground="#6B7280"/>
+        </StackPanel>
+
+        <!-- Filter and Controls Section -->
+        <Border Grid.Row="1"
+                Background="#FFFFFF"
+                BorderBrush="#E5E7EB"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="16">
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="12">
+                
+                <!-- Search Box -->
+                <TextBox Grid.Column="0"
+                         Text="{Binding SearchText}"
+                         Watermark="🔍 Search logs..."
+                         FontSize="14"
+                         Padding="10,8"
+                         Background="#F9FAFB"
+                         BorderBrush="#D1D5DB"
+                         CornerRadius="6"
+                         ToolTip.Tip="Filter logs by text search (case insensitive)"/>
+
+                <!-- Filter Buttons -->
+                <ToggleButton Grid.Column="1"
+                              Content="ℹ️ Info"
+                              IsChecked="{Binding ShowInfo}"
+                              FontSize="13"
+                              Padding="12,8"
+                              Background="{Binding ShowInfo, Converter={StaticResource BoolToColorConverter}, ConverterParameter=#0078D4:#F3F4F6}"
+                              Foreground="{Binding ShowInfo, Converter={StaticResource BoolToColorConverter}, ConverterParameter=#FFFFFF:#6B7280}"
+                              BorderBrush="#D1D5DB"
+                              BorderThickness="1"
+                              CornerRadius="6"
+                              Cursor="Hand"
+                              ToolTip.Tip="Toggle informational messages">
+                    <ToggleButton.Styles>
+                        <Style Selector="ToggleButton:checked">
+                            <Setter Property="Background" Value="#0078D4"/>
+                            <Setter Property="Foreground" Value="#FFFFFF"/>
+                        </Style>
+                        <Style Selector="ToggleButton:unchecked">
+                            <Setter Property="Background" Value="#F3F4F6"/>
+                            <Setter Property="Foreground" Value="#6B7280"/>
+                        </Style>
+                    </ToggleButton.Styles>
+                </ToggleButton>
+
+                <ToggleButton Grid.Column="2"
+                              Content="⚠️ Warning"
+                              IsChecked="{Binding ShowWarning}"
+                              FontSize="13"
+                              Padding="12,8"
+                              BorderBrush="#D1D5DB"
+                              BorderThickness="1"
+                              CornerRadius="6"
+                              Cursor="Hand"
+                              ToolTip.Tip="Toggle warning messages">
+                    <ToggleButton.Styles>
+                        <Style Selector="ToggleButton:checked">
+                            <Setter Property="Background" Value="#F59E0B"/>
+                            <Setter Property="Foreground" Value="#FFFFFF"/>
+                        </Style>
+                        <Style Selector="ToggleButton:unchecked">
+                            <Setter Property="Background" Value="#F3F4F6"/>
+                            <Setter Property="Foreground" Value="#6B7280"/>
+                        </Style>
+                    </ToggleButton.Styles>
+                </ToggleButton>
+
+                <ToggleButton Grid.Column="3"
+                              Content="❌ Error"
+                              IsChecked="{Binding ShowError}"
+                              FontSize="13"
+                              Padding="12,8"
+                              BorderBrush="#D1D5DB"
+                              BorderThickness="1"
+                              CornerRadius="6"
+                              Cursor="Hand"
+                              ToolTip.Tip="Toggle error messages">
+                    <ToggleButton.Styles>
+                        <Style Selector="ToggleButton:checked">
+                            <Setter Property="Background" Value="#EF4444"/>
+                            <Setter Property="Foreground" Value="#FFFFFF"/>
+                        </Style>
+                        <Style Selector="ToggleButton:unchecked">
+                            <Setter Property="Background" Value="#F3F4F6"/>
+                            <Setter Property="Foreground" Value="#6B7280"/>
+                        </Style>
+                    </ToggleButton.Styles>
+                </ToggleButton>
+
+                <!-- Clear Button -->
+                <Button Grid.Column="4"
+                        Content="🗑️ Clear"
+                        Command="{Binding ClearLogsCommand}"
+                        Classes="secondary"
+                        FontSize="13"
+                        Padding="12,8"
+                        ToolTip.Tip="Clear all log entries"/>
+
+                <!-- Export Button -->
+                <Button Grid.Column="5"
+                        Content="💾 Export"
+                        Command="{Binding ExportLogsCommand}"
+                        Classes="success"
+                        FontSize="13"
+                        Padding="12,8"
+                        ToolTip.Tip="Export filtered logs to desktop as text file"/>
+            </Grid>
+        </Border>
+
+        <!-- Log List -->
+        <Border Grid.Row="2"
+                Background="#FFFFFF"
+                BorderBrush="#E5E7EB"
+                BorderThickness="1"
+                CornerRadius="8">
+            <ScrollViewer Name="LogScrollViewer"
+                          ScrollChanged="OnScrollChanged">
+                <ItemsControl ItemsSource="{Binding FilteredLogs}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="Transparent"
+                                    Padding="12,8"
+                                    BorderBrush="#F3F4F6"
+                                    BorderThickness="0,0,0,1">
+                                <Grid ColumnDefinitions="Auto,Auto,*">
+                                    <!-- Timestamp -->
+                                    <TextBlock Grid.Column="0"
+                                               Text="{Binding FormattedTimestamp}"
+                                               FontSize="11"
+                                               Foreground="#9CA3AF"
+                                               FontFamily="Consolas,Courier New,monospace"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,12,0"/>
+                                    
+                                    <!-- Level Icon -->
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Icon}"
+                                               FontSize="14"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,8,0"/>
+                                    
+                                    <!-- Message -->
+                                    <TextBlock Grid.Column="2"
+                                               Text="{Binding Message}"
+                                               FontSize="13"
+                                               Foreground="{Binding Color}"
+                                               TextWrapping="Wrap"
+                                               VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="3"
+                Background="#FFFFFF"
+                BorderBrush="#E5E7EB"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="12">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <!-- Log Count -->
+                <TextBlock Grid.Column="0"
+                           FontSize="12"
+                           Foreground="#6B7280">
+                    <Run Text="{Binding FilteredLogs.Count}"/>
+                    <Run Text="of"/>
+                    <Run Text="{Binding AllLogs.Count}"/>
+                    <Run Text="logs"/>
+                </TextBlock>
+
+                <!-- Auto-scroll Toggle -->
+                <CheckBox Grid.Column="2"
+                          Content="Auto-scroll"
+                          IsChecked="{Binding AutoScroll}"
+                          FontSize="12"
+                          Foreground="#6B7280"/>
+            </Grid>
+        </Border>
+    </Grid>
+
+</UserControl>

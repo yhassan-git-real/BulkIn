@@ -1,0 +1,208 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:BulkIn.Desktop.ViewModels"
+        xmlns:views="using:BulkIn.Desktop.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+        x:Class="BulkIn.Desktop.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="BulkIn - File Bulk Insert Manager"
+        Width="1200" Height="800"
+        MinWidth="1000" MinHeight="600"
+        Background="#FFFFFF">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Window.KeyBindings>
+        <!-- Tab Navigation Shortcuts -->
+        <KeyBinding Gesture="Ctrl+1" Command="{Binding NavigateToProcessingCommand}"/>
+        <KeyBinding Gesture="Ctrl+2" Command="{Binding NavigateToSettingsCommand}"/>
+        <KeyBinding Gesture="Ctrl+3" Command="{Binding NavigateToLogsCommand}"/>
+        <!-- Help Shortcut -->
+        <KeyBinding Gesture="F1" Command="{Binding ShowAboutCommand}"/>
+    </Window.KeyBindings>
+
+    <!-- Main Layout: Menu + Header with Tabs + Content + Status Bar -->
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+        
+        <!-- Menu Bar -->
+        <Menu Grid.Row="0" Background="#FFFFFF" BorderBrush="#E5E7EB" BorderThickness="0,0,0,1" Padding="4,2">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Exit" 
+                          InputGesture="Alt+F4"/>
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Clear Queue"/>
+                <MenuItem Header="_Refresh Files" InputGesture="F5"/>
+            </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem Header="_Processing" 
+                          Command="{Binding NavigateToProcessingCommand}"
+                          InputGesture="Ctrl+1"/>
+                <MenuItem Header="_Settings" 
+                          Command="{Binding NavigateToSettingsCommand}"
+                          InputGesture="Ctrl+2"/>
+                <MenuItem Header="_Logs" 
+                          Command="{Binding NavigateToLogsCommand}"
+                          InputGesture="Ctrl+3"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About BulkIn" 
+                          Command="{Binding ShowAboutCommand}"
+                          InputGesture="F1"/>
+                <Separator/>
+                <MenuItem Header="_Documentation"/>
+            </MenuItem>
+        </Menu>
+        
+        <!-- Compact Title Bar with Integrated Tabs -->
+        <Border Grid.Row="1" Background="#0078D4" BorderBrush="#003F87" BorderThickness="0,0,0,1">
+            <Grid ColumnDefinitions="Auto,*" Height="48">
+                <!-- App Title - Compact -->
+                <StackPanel Grid.Column="0" 
+                            Orientation="Horizontal" 
+                            Spacing="10" 
+                            Margin="16,0,24,0"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="📦" FontSize="20" VerticalAlignment="Center"/>
+                    <TextBlock Text="BulkIn" 
+                               FontSize="16" 
+                               FontWeight="SemiBold" 
+                               Foreground="#FFFFFF"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="·" 
+                               FontSize="14" 
+                               Foreground="#6FB3F7"
+                               VerticalAlignment="Center"
+                               Margin="2,0"/>
+                    <TextBlock Text="File Bulk Insert Manager" 
+                               FontSize="11" 
+                               Foreground="#A8D1FF"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+                
+                <!-- Embedded Tab Strip -->
+                <TabStrip Grid.Column="1" 
+                          SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}"
+                          VerticalAlignment="Bottom"
+                          Margin="0,0,16,0"
+                          Background="Transparent">
+                    <TabStrip.Styles>
+                        <Style Selector="TabStripItem">
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="Padding" Value="14,8,14,10"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="#B3D9FF"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="CornerRadius" Value="6,6,0,0"/>
+                            <Setter Property="Margin" Value="0,0,2,0"/>
+                        </Style>
+                        <Style Selector="TabStripItem:selected">
+                            <Setter Property="Background" Value="#F9FAFB"/>
+                            <Setter Property="Foreground" Value="#0078D4"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                        </Style>
+                        <Style Selector="TabStripItem:pointerover">
+                            <Setter Property="Background" Value="#1E5A8F"/>
+                            <Setter Property="Foreground" Value="#FFFFFF"/>
+                        </Style>
+                    </TabStrip.Styles>
+                    
+                    <TabStripItem>
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <TextBlock Text="📊" FontSize="11"/>
+                            <TextBlock Text="Processing"/>
+                        </StackPanel>
+                    </TabStripItem>
+                    <TabStripItem>
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <TextBlock Text="⚙️" FontSize="11"/>
+                            <TextBlock Text="Settings"/>
+                        </StackPanel>
+                    </TabStripItem>
+                    <TabStripItem>
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <TextBlock Text="📝" FontSize="11"/>
+                            <TextBlock Text="Logs"/>
+                        </StackPanel>
+                    </TabStripItem>
+                </TabStrip>
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Border Grid.Row="2" Background="#F9FAFB" Padding="0">
+            <TabControl SelectedIndex="{Binding SelectedTabIndex}"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="0"
+                        TabStripPlacement="Top">
+                
+                <TabControl.Styles>
+                    <!-- Hide the default tab headers -->
+                    <Style Selector="TabControl WrapPanel">
+                        <Setter Property="IsVisible" Value="False"/>
+                    </Style>
+                </TabControl.Styles>
+
+                <!-- Processing Tab -->
+                <TabItem AutomationProperties.Name="Processing Tab">
+                    <views:ProcessingView DataContext="{Binding ProcessingViewModel}"/>
+                </TabItem>
+
+                <!-- Settings Tab -->
+                <TabItem AutomationProperties.Name="Settings Tab">
+                    <views:SettingsView DataContext="{Binding SettingsViewModel}"/>
+                </TabItem>
+
+                <!-- Logs Tab -->
+                <TabItem AutomationProperties.Name="Logs Tab">
+                    <views:LogsView DataContext="{Binding LogsViewModel}"/>
+                </TabItem>
+
+            </TabControl>
+        </Border>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="3" 
+                Background="#F3F4F6" 
+                BorderBrush="#E5E7EB" 
+                BorderThickness="0,1,0,0" 
+                Padding="16,8">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <!-- Status Message -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="●" 
+                               Foreground="#10B981" 
+                               FontSize="12" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding StatusMessage}" 
+                               FontSize="12" 
+                               Foreground="#6B7280"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+                
+                <!-- Right Side Info -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="16">
+                    <TextBlock Text="💡 Ctrl+1/2/3: Switch tabs | F5: Start | Ctrl+S: Save | F1: Help" 
+                               FontSize="10" 
+                               Foreground="#9CA3AF"
+                               VerticalAlignment="Center"/>
+                    <Rectangle Width="1" 
+                               Fill="#D1D5DB" 
+                               Margin="0,2"/>
+                    <TextBlock Text="BulkIn v1.0" 
+                               FontSize="11" 
+                               Foreground="#9CA3AF"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+    </Grid>
+
+</Window>
