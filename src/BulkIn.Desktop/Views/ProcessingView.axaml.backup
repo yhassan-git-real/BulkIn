@@ -1,0 +1,406 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:BulkIn.Desktop.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+             x:Class="BulkIn.Desktop.Views.ProcessingView"
+             x:DataType="vm:ProcessingViewModel"
+             Background="#F9FAFB">
+
+    <Design.DataContext>
+        <vm:ProcessingViewModel/>
+    </Design.DataContext>
+
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="F5" Command="{Binding StartProcessingCommand}"/>
+        <KeyBinding Gesture="Ctrl+P" Command="{Binding PauseProcessingCommand}"/>
+    </UserControl.KeyBindings>
+
+    <Grid RowDefinitions="Auto,Auto,*" Margin="12" RowSpacing="10">
+        
+        <!-- Compact Header Section -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="6">
+                <TextBlock Text="🚀" FontSize="16" VerticalAlignment="Center"/>
+                <TextBlock Text="File Processing" 
+                           FontSize="15" 
+                           FontWeight="SemiBold" 
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+            <TextBlock Grid.Column="2"
+                       Text="{Binding FileCountText}"
+                       FontSize="11"
+                       Foreground="#6B7280"
+                       VerticalAlignment="Center"/>
+        </Grid>
+
+        <!-- Source Path Bar -->
+        <Border Grid.Row="1" 
+                Background="#F9FAFB" 
+                BorderBrush="#D1D5DB"
+                BorderThickness="1"
+                CornerRadius="4"
+                Padding="8,6">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <TextBlock Grid.Column="0" 
+                           Text="📂" 
+                           FontSize="12"
+                           VerticalAlignment="Center"
+                           Margin="0,0,5,0"/>
+                <TextBlock Grid.Column="1" 
+                           Text="{Binding SourceFilePath}" 
+                           FontSize="11"
+                           Foreground="#6B7280"
+                           VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis"/>
+                <Button Grid.Column="2"
+                        Content="🔄"
+                        Command="{Binding RefreshFilesCommand}"
+                        FontSize="11"
+                        Padding="4,2"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        ToolTip.Tip="Refresh file list"/>
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area - Redesigned Layout -->
+        <Grid Grid.Row="2" ColumnDefinitions="1.2*,320" ColumnSpacing="10">
+            
+            <!-- Left Panel: File List -->
+            <Border Grid.Column="0" 
+                    Background="#FFFFFF" 
+                    BorderBrush="#E5E7EB" 
+                    BorderThickness="1" 
+                    CornerRadius="6"
+                    Padding="12"
+                    BoxShadow="0 1 3 0 #0000001A">
+                <Grid RowDefinitions="Auto,*,Auto">
+                    <!-- File List Header -->
+                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+                        <TextBlock Grid.Column="0"
+                                   Text="📁 Files Queue" 
+                                   FontSize="13" 
+                                   FontWeight="SemiBold" 
+                                   Foreground="#374151"/>
+                        <Rectangle Grid.Column="0"
+                                   Height="1.5"
+                                   Fill="#0078D4"
+                                   Opacity="0.2"
+                                   VerticalAlignment="Bottom"
+                                   Margin="0,0,0,-4"/>
+                    </Grid>
+
+                    <!-- Compact File List -->
+                    <Border Grid.Row="1"
+                            Background="#FAFBFC"
+                            BorderBrush="#E5E7EB"
+                            BorderThickness="1"
+                            CornerRadius="4">
+                        <ListBox ItemsSource="{Binding FileList}"
+                                 Background="Transparent"
+                                 BorderThickness="0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="Transparent"
+                                            Padding="6,4"
+                                            BorderBrush="#E5E7EB"
+                                            BorderThickness="0,0,0,1">
+                                        <Grid ColumnDefinitions="Auto,*,Auto">
+                                            <!-- Status Icon -->
+                                            <TextBlock Grid.Column="0"
+                                                       Text="{Binding StatusIcon}"
+                                                       Foreground="{Binding StatusColor}"
+                                                       FontSize="11"
+                                                       VerticalAlignment="Center"
+                                                       Margin="0,0,5,0"/>
+                                            
+                                            <!-- File Name -->
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding FileName}"
+                                                       FontSize="11"
+                                                       Foreground="#374151"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       VerticalAlignment="Center"/>
+                                            
+                                            <!-- Records Count -->
+                                            <TextBlock Grid.Column="2"
+                                                       Text="{Binding RecordsProcessed, StringFormat='{}{0:N0}'}"
+                                                       FontSize="9"
+                                                       Foreground="#6B7280"
+                                                       VerticalAlignment="Center"
+                                                       Margin="5,0,0,0"
+                                                       IsVisible="{Binding RecordsProcessed}"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.Styles>
+                                <Style Selector="ListBoxItem">
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                </Style>
+                            </ListBox.Styles>
+                        </ListBox>
+                    </Border>
+                    
+                    <!-- Progress Section Below File List -->
+                    <StackPanel Grid.Row="2" Spacing="6" Margin="0,10,0,0">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Grid.Column="0"
+                                       Text="{Binding ProgressStatusText}"
+                                       FontSize="11"
+                                       FontWeight="Medium"
+                                       Foreground="#374151"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding ProgressPercentageText}"
+                                       FontSize="11"
+                                       FontWeight="Bold"
+                                       Foreground="#0078D4"/>
+                        </Grid>
+                        <ProgressBar Value="{Binding ProgressPercentage}"
+                                     Minimum="0"
+                                     Maximum="100"
+                                     Height="6"
+                                     CornerRadius="3"
+                                     Background="#E5E7EB"
+                                     Foreground="#0078D4"/>
+                        <TextBlock Text="{Binding CurrentFileProcessing}"
+                                   FontSize="9"
+                                   Foreground="#6B7280"
+                                   FontStyle="Italic"
+                                   TextTrimming="CharacterEllipsis"
+                                   IsVisible="{Binding !!CurrentFileProcessing}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Right Panel: Controls & Statistics -->
+            <Grid Grid.Column="1" RowDefinitions="Auto,*">
+                
+                <!-- Processing Controls - Improved Card Design -->
+                <Border Grid.Row="0" 
+                        Background="#FFFFFF" 
+                        BorderBrush="#E5E7EB" 
+                        BorderThickness="1" 
+                        CornerRadius="6"
+                        Padding="12"
+                        BoxShadow="0 1 3 0 #0000001A">
+                    <StackPanel Spacing="8">
+                        <!-- Section Header -->
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="⚡ Controls" 
+                                       FontSize="13" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="#10B981"/>
+                            <Rectangle Height="1.5" 
+                                       Fill="#10B981" 
+                                       Opacity="0.2" 
+                                       HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+
+                        <!-- Start Button -->
+                        <Button Content="▶️ Start Processing" 
+                                Command="{Binding StartProcessingCommand}"
+                                IsEnabled="{Binding CanStartProcessing}"
+                                Classes="success"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                ToolTip.Tip="Start processing all files in the queue (F5)"
+                                AutomationProperties.Name="Start Processing"
+                                AutomationProperties.HelpText="Begins processing all files in the queue. Keyboard shortcut: F5"
+                                TabIndex="1"/>
+
+                        <!-- Pause Button -->
+                        <Button Content="⏸️ Pause" 
+                                Command="{Binding PauseProcessingCommand}"
+                                IsEnabled="{Binding CanPauseProcessing}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                ToolTip.Tip="Pause current processing (Ctrl+P)"
+                                AutomationProperties.Name="Pause Processing"
+                                AutomationProperties.HelpText="Pauses the current file processing operation. Keyboard shortcut: Ctrl+P"
+                                TabIndex="2">
+                            <Button.Styles>
+                                <Style Selector="Button">
+                                    <Setter Property="Background" Value="{StaticResource WarningOrangeBrush}"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="CornerRadius" Value="6"/>
+                                    <Setter Property="Padding" Value="10,7"/>
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Style>
+                                <Style Selector="Button:pointerover /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#D97706"/>
+                                </Style>
+                                <Style Selector="Button:disabled /template/ ContentPresenter">
+                                    <Setter Property="Background" Value="#D1D5DB"/>
+                                    <Setter Property="Foreground" Value="#9CA3AF"/>
+                                </Style>
+                            </Button.Styles>
+                        </Button>
+
+                        <!-- Stop Button -->
+                        <Button Content="⏹️ Stop" 
+                                Command="{Binding StopProcessingCommand}"
+                                IsEnabled="{Binding CanStopProcessing}"
+                                Classes="danger"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                ToolTip.Tip="Stop processing and cancel remaining files"
+                                AutomationProperties.Name="Stop Processing"
+                                AutomationProperties.HelpText="Stops file processing and cancels all remaining files in the queue"
+                                TabIndex="3"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Statistics Panel - Improved Card Design -->
+                <Border Grid.Row="1" 
+                        Background="#FFFFFF" 
+                        BorderBrush="#E5E7EB" 
+                        BorderThickness="1" 
+                        CornerRadius="6"
+                        Padding="12"
+                        Margin="0,10,0,0"
+                        BoxShadow="0 1 3 0 #0000001A">
+                    <StackPanel Spacing="8">
+                        <!-- Section Header -->
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="📊 Statistics" 
+                                       FontSize="13" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="#6366F1"/>
+                            <Rectangle Height="1.5" 
+                                       Fill="#6366F1" 
+                                       Opacity="0.2" 
+                                       HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+
+                        <!-- Statistics Grid - Compact Design -->
+                        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="7">
+                            
+                            <!-- Total Files -->
+                            <Border Grid.Row="0" 
+                                    Background="#F9FAFB" 
+                                    CornerRadius="5" 
+                                    Padding="8,6">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Grid.Column="0"
+                                               Text="Total Files" 
+                                               FontSize="11" 
+                                               Foreground="#6B7280"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding TotalFilesCount}" 
+                                               FontSize="16" 
+                                               FontWeight="Bold" 
+                                               Foreground="#111827"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Processed Files -->
+                            <Border Grid.Row="1" 
+                                    Background="#ECFDF5" 
+                                    CornerRadius="5" 
+                                    Padding="8,6">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Grid.Column="0"
+                                               Text="Processed" 
+                                               FontSize="11" 
+                                               Foreground="#6B7280"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding ProcessedFilesCount}" 
+                                               FontSize="16" 
+                                               FontWeight="Bold" 
+                                               Foreground="#10B981"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Failed Files -->
+                            <Border Grid.Row="2" 
+                                    Background="#FEF2F2" 
+                                    CornerRadius="5" 
+                                    Padding="8,6">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Grid.Column="0"
+                                               Text="Failed" 
+                                               FontSize="11" 
+                                               Foreground="#6B7280"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding FailedFilesCount}" 
+                                               FontSize="16" 
+                                               FontWeight="Bold" 
+                                               Foreground="#EF4444"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Total Records -->
+                            <Border Grid.Row="3" 
+                                    Background="#EEF2FF" 
+                                    CornerRadius="5" 
+                                    Padding="8,6">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Grid.Column="0"
+                                               Text="Records" 
+                                               FontSize="11" 
+                                               Foreground="#6B7280"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding TotalRecordsProcessed}" 
+                                               FontSize="16" 
+                                               FontWeight="Bold" 
+                                               Foreground="#6366F1"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Elapsed Time -->
+                            <Border Grid.Row="4" 
+                                    Background="#F9FAFB" 
+                                    CornerRadius="5" 
+                                    Padding="8,6">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Grid.Column="0"
+                                               Text="Duration" 
+                                               FontSize="11" 
+                                               Foreground="#6B7280"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding ElapsedTime}" 
+                                               FontSize="13" 
+                                               FontWeight="SemiBold" 
+                                               Foreground="#374151"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Processing Rate -->
+                            <Border Grid.Row="5" 
+                                    Background="#F9FAFB" 
+                                    CornerRadius="5" 
+                                    Padding="8,6">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Grid.Column="0"
+                                               Text="Rate" 
+                                               FontSize="11" 
+                                               Foreground="#6B7280"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding ProcessingRate}" 
+                                               FontSize="12" 
+                                               FontWeight="Medium" 
+                                               Foreground="#6B7280"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+
+</UserControl>
